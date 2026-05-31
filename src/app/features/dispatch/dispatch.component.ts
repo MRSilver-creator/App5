@@ -351,10 +351,14 @@ export class DispatchComponent implements OnInit, OnDestroy, AfterViewInit {
       timestamp:     new Date().toISOString()
     };
 
-    await this.fb.saveDelivery(delivery);
-
-    this.successMessage = `Delivery for ${delivery.customerName} saved successfully!`;
-    this.resetForm();
+    try {
+      await this.fb.saveDelivery(delivery);
+      this.successMessage = `Delivery for ${delivery.customerName} saved successfully!`;
+      this.resetForm();
+    } catch (e) {
+      this.validationError = e instanceof Error ? e.message : 'Failed to save delivery request.';
+      console.error('saveDelivery failed:', e);
+    }
   }
 
   private resetForm(): void {
