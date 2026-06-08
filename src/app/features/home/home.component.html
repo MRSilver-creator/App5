@@ -4,39 +4,40 @@
 <!-- ── NAV ───────────────────────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-logo">
-    <span class="logo-bracket">[</span>QD<span class="logo-bracket">]</span>
-    <span class="logo-sub">QUICKDISPATCH</span>
+    <span class="logo-bracket">[</span>Rx<span class="logo-bracket">]</span>
+    <span class="logo-sub">MEDIDENTIFY</span>
   </div>
-  <m-main-menu class="nav-menu" [menuitems]="navItems" (menuclick)="onNavClick($event)"></m-main-menu>
+  <div class="nav-menu">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#features" class="nav-link">Features</a>
+    <button class="btn-primary nav-cta" (click)="goToIdentify()">Get Started</button>
+  </div>
 </nav>
 
 <!-- ── HERO ──────────────────────────────────────────────────────────────── -->
 <section class="hero">
-  <!-- Animated grid background -->
   <div class="grid-bg" aria-hidden="true"></div>
-
-  <!-- Decorative blobs -->
   <div class="blob blob-1" aria-hidden="true"></div>
   <div class="blob blob-2" aria-hidden="true"></div>
 
   <div class="hero-inner">
     <div class="hero-label">
-      <span class="dot"></span> LOGISTICS DISPATCH SYSTEM v2.0
+      <span class="dot"></span> AI MEDICATION IDENTIFIER
     </div>
 
     <h1 class="hero-h1">
-      ROUTE.<br>TRACK.<br><span class="h1-accent">DELIVER.</span>
+      SNAP.<br>IDENTIFY.<br><span class="h1-accent">STAY SAFE.</span>
     </h1>
 
     <p class="hero-p">
-      Cloud-connected delivery management for field teams.
-      Pin drop-offs on a live map, compute distances automatically,
-      and generate AI courier briefings — all synced in real time.
+      Point your camera at any medication. Gemini AI instantly identifies
+      the drug, dosage, uses, and warnings — then saves it to your
+      personal cloud library for future reference.
     </p>
 
     <div class="hero-actions">
-      <button class="btn-primary" (click)="goToDispatch()">
-        OPEN DISPATCH BOARD
+      <button class="btn-primary" (click)="goToIdentify()">
+        IDENTIFY A MEDICATION
       </button>
       <a href="#about" class="btn-ghost">LEARN MORE ↓</a>
     </div>
@@ -59,17 +60,16 @@
       <span class="tb-dot red"></span>
       <span class="tb-dot amber"></span>
       <span class="tb-dot green"></span>
-      <span class="tb-title">dispatch_log.sh</span>
+      <span class="tb-title">gemini_scan.sh</span>
     </div>
     <div class="terminal-body">
-      <p><span class="t-prompt">$</span> <span class="t-cmd">connect firebase --realtime</span></p>
-      <p class="t-ok">✓ Connected · 3 devices online</p>
-      <p><span class="t-prompt">$</span> <span class="t-cmd">fetch deliveries --all</span></p>
-      <p class="t-ok">✓ 12 deliveries loaded</p>
-      <p><span class="t-prompt">$</span> <span class="t-cmd">haversine --from warehouse</span></p>
-      <p class="t-ok">✓ Distances computed</p>
-      <p><span class="t-prompt">$</span> <span class="t-cmd">gemini generate --briefing</span></p>
-      <p class="t-ok">✓ AI instructions ready</p>
+      <p><span class="t-prompt">$</span> <span class="t-cmd">capture --source camera</span></p>
+      <p class="t-ok">✓ Image captured (1280×720)</p>
+      <p><span class="t-prompt">$</span> <span class="t-cmd">gemini analyze --vision</span></p>
+      <p class="t-ok">✓ Medication: Paracetamol 500mg</p>
+      <p class="t-ok">✓ Confidence: HIGH</p>
+      <p><span class="t-prompt">$</span> <span class="t-cmd">firebase save --library</span></p>
+      <p class="t-ok">✓ Saved to your library</p>
       <p class="t-cursor"><span class="t-prompt">$</span> <span class="blink">_</span></p>
     </div>
   </div>
@@ -79,14 +79,14 @@
 <section class="about" id="about">
   <div class="section-header">
     <span class="section-tag">// ABOUT</span>
-    <h2 class="section-h2">What is QuickDispatch?</h2>
-    <m-container>
-      A cloud-connected dispatch tool built for small logistics teams.
-      Dispatchers create delivery requests by tapping on a Google Map —
-      the app computes distances, syncs to Firebase in real time across every
-      device, and Gemini AI generates a professional 2-sentence courier
-      briefing for each drop-off.
-    </m-container>
+    <h2 class="section-h2">What is MedIdentify?</h2>
+    <p class="about-p">
+      MedIdentify is an AI-powered medication identification tool designed
+      to help you quickly understand any pill, capsule, or drug packaging.
+      Simply take a photo or upload an image — Gemini Vision does the rest,
+      returning the medication name, active ingredient, typical dosage,
+      common uses, and safety warnings in seconds.
+    </p>
   </div>
 </section>
 
@@ -95,27 +95,29 @@
   <span class="section-tag">// FEATURES</span>
   <h2 class="section-h2">What it does</h2>
 
-  <m-table
-    class="feat-table"
-    [data]="features"
-    [columnsToBeDisplayed]="featureColumns"
-    [tableHeaders]="featureHeaders">
-  </m-table>
+  <div class="features-grid">
+    <div class="feature-card" *ngFor="let f of features">
+      <div class="feat-no">{{ f.no }}</div>
+      <div class="feat-icon">{{ f.icon }}</div>
+      <div class="feat-title">{{ f.title }}</div>
+      <div class="feat-desc">{{ f.description }}</div>
+    </div>
+  </div>
 </section>
 
 <!-- ── CTA ────────────────────────────────────────────────────────────────── -->
 <section class="cta-section">
   <div class="cta-inner">
-    <p class="cta-tag">READY TO DISPATCH?</p>
-    <h2 class="cta-h2">Start managing deliveries now.</h2>
-    <button class="btn-primary btn-lg" (click)="goToDispatch()">OPEN DISPATCH BOARD →</button>
+    <p class="cta-tag">READY TO START?</p>
+    <h2 class="cta-h2">Identify your first medication now.</h2>
+    <button class="btn-primary btn-lg" (click)="goToIdentify()">IDENTIFY A MEDICATION →</button>
   </div>
 </section>
 
 <!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
 <footer class="footer">
   <div class="footer-logo">
-    <span class="logo-bracket">[</span>QD<span class="logo-bracket">]</span> QUICKDISPATCH
+    <span class="logo-bracket">[</span>Rx<span class="logo-bracket">]</span> MEDIDENTIFY
   </div>
-  <p class="footer-copy">CEN333 / BME433 · Assignment 4</p>
+  <p class="footer-copy">CEN333 · Assignment</p>
 </footer>

@@ -1,51 +1,40 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MContainerComponent } from '../../m-framework/components/m-container/m-container.component';
-import { MMainMenuComponent } from '../../m-framework/components/m-main-menu/m-main-menu.component';
-import { MTableComponent } from '../../m-framework/components/m-table/m-table.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    MContainerComponent,
-    MMainMenuComponent,
-    MTableComponent,
-  ],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  readonly navItems = ['About', 'Features', 'Launch App'];
+  readonly navItems = ['About', 'Features', 'Get Started'];
 
   readonly stats = [
+    { label: 'AI-Powered', value: '✦' },
+    { label: 'Gemini Vision', value: 'AI' },
     { label: 'Real-time sync', value: '∞' },
-    { label: 'Haversine accuracy', value: '±0.01km' },
-    { label: 'Gemini briefings', value: 'AI' },
-    { label: 'Priority tiers', value: '3' },
+    { label: 'Confidence tiers', value: '3' },
   ];
 
   readonly features = [
-    { no: '01', icon: '📍', title: 'Map-Click Location', description: 'Tap anywhere on the Google Map to pin a delivery. Lat/lng captured instantly.' },
-    { no: '02', icon: '🔄', title: 'Real-Time Firebase Sync', description: "New deliveries appear on every device the moment they're saved — no refresh needed." },
-    { no: '03', icon: '📐', title: 'Haversine Distance', description: 'Straight-line distance from warehouse to delivery, computed with the Haversine formula.' },
-    { no: '04', icon: '🤖', title: 'Gemini AI Briefings', description: 'One tap generates a 2-sentence courier instruction, saved back to the cloud for all dispatchers.' },
-    { no: '05', icon: '🗺️', title: 'Color-Coded Markers', description: 'Green = Standard · Amber = Express · Red = Urgent. Route polyline drawn on marker tap.' },
-    { no: '06', icon: '⭐', title: 'Nearest Highlight', description: 'The table automatically highlights the delivery closest to the warehouse so dispatchers can prioritize.' },
+    { no: '01', icon: '📷', title: 'Camera / Upload', description: 'Take a live photo or upload an image of any medication packaging.' },
+    { no: '02', icon: '🤖', title: 'Gemini AI Analysis', description: 'Gemini Vision identifies the medication, active ingredients, dosage, uses, and warnings instantly.' },
+    { no: '03', icon: '🔒', title: 'Confidence Rating', description: 'Every result carries a High / Medium / Low confidence score so you always know how reliable the reading is.' },
+    { no: '04', icon: '📚', title: 'Personal Library', description: 'Save identified medications to your cloud library with an optional nickname for quick reference.' },
+    { no: '05', icon: '💊', title: 'Dose Logging', description: 'Record when you took each medication and review the full history at any time.' },
+    { no: '06', icon: '🔄', title: 'Real-Time Firebase', description: 'All data is stored and synced via Firebase Realtime Database — available instantly across devices.' },
   ];
-
-  readonly featureColumns = ['no', 'icon', 'title', 'description'];
-  readonly featureHeaders = ['#', '', 'Feature', 'What it does'];
 
   constructor(private router: Router) {}
 
-  goToDispatch(): void { this.router.navigate(['/dispatch']); }
+  goToIdentify(): void { this.router.navigate(['/identify']); }
 
   onNavClick(item: string): void {
-    if (item === 'Launch App') {
-      this.goToDispatch();
+    if (item === 'Get Started') {
+      this.goToIdentify();
       return;
     }
     const target = document.getElementById(item.toLowerCase());
