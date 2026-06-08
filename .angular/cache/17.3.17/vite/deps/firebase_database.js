@@ -39,10 +39,10 @@ import {
   stringToByteArray,
   stringify,
   updateEmulatorBanner
-} from "./chunk-LRJVO7R7.js";
+} from "./chunk-YHMLWRX3.js";
 import {
   __async
-} from "./chunk-WDMUDEB6.js";
+} from "./chunk-3OV72XIM.js";
 
 // node_modules/@firebase/database/dist/index.esm2017.js
 var name = "@firebase/database";

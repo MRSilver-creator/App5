@@ -1,20 +1,10 @@
-<!-- Disclaimer Banner -->
-<div class="disclaimer-banner">
-  ⚠️ <strong>Educational use only.</strong> PillSnap is not a medical advice or diagnostic tool.
-  Always verify medications with a pharmacist or doctor.
-</div>
+<m-header [title]="titleName" [features]="navFeatures"></m-header>
 
-<!-- Navigation -->
-<nav class="main-nav">
-  <div class="nav-brand">💊 PillSnap</div>
-  <div class="nav-links">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">📷 Identify</a>
-    <a routerLink="/library" routerLinkActive="active">📚 Library</a>
-    <a routerLink="/log" routerLinkActive="active">✏️ Log Dose</a>
-    <a routerLink="/history" routerLinkActive="active">📋 History</a>
+<div class="app-page-content">
+  <div class="disclaimer-banner">
+    ⚠️ Educational use only. PillSnap is not a diagnostic or medical advice tool.
+    Always verify medications with a pharmacist or doctor.
   </div>
-</nav>
 
-<main class="main-content">
-  <router-outlet />
-</main>
+  <router-outlet></router-outlet>
+</div>

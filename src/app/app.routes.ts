@@ -5,10 +5,10 @@ import { LogDoseComponent }   from './features/log-dose/log-dose.component';
 import { HistoryComponent }   from './features/history/history.component';
 
 export const routes: Routes = [
-  { path: '',         component: IdentifyComponent },
-  { path: 'identify', component: IdentifyComponent },
-  { path: 'library',  component: LibraryComponent },
-  { path: 'log',      component: LogDoseComponent },
-  { path: 'history',  component: HistoryComponent },
-  { path: '**',       redirectTo: '' },
+  { path: '',          component: IdentifyComponent },
+  { path: 'identify',  component: IdentifyComponent },
+  { path: 'library',   component: LibraryComponent },
+  { path: 'log-dose',  component: LogDoseComponent },
+  { path: 'history',   component: HistoryComponent },
+  { path: '**',        redirectTo: '' },
 ];

@@ -40,8 +40,8 @@
 
         <div class="details-panel" *ngIf="expandedId === med.id">
           <div class="detail-row"><span>Dosage:</span> {{ med.analysis.typicalAdultDosage }}</div>
-          <div class="detail-row"><span>Uses:</span> {{ med.analysis.commonUses?.join(', ') }}</div>
-          <div class="detail-row"><span>Warnings:</span> {{ med.analysis.warnings?.join(', ') }}</div>
+          <div class="detail-row"><span>Uses:</span> {{ med.analysis.commonUses.join(', ') }}</div>
+          <div class="detail-row"><span>Warnings:</span> {{ med.analysis.warnings.join(', ') }}</div>
           <div class="detail-row"><span>Confidence:</span>
             <span class="confidence" [ngClass]="med.analysis.confidenceLevel">{{ med.analysis.confidenceLevel | uppercase }}</span>
           </div>

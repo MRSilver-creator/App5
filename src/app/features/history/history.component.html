@@ -1,42 +1,26 @@
 <div class="page-card">
   <h2>📋 Intake History</h2>
 
-  <!-- 7-day chart -->
-  <div class="chart-section" *ngIf="chartOptions">
-    <canvasjs-chart [options]="chartOptions" [styles]="{width:'100%',height:'280px'}"></canvasjs-chart>
+  <div class="chart-section" *ngIf="chartData.length">
+    <m-timeserieschart [data]="chartData"></m-timeserieschart>
   </div>
 
-  <!-- Search -->
   <div class="search-row">
     <input
       type="text"
       [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearchChange()"
       placeholder="🔍 Filter by medication name…"
       class="search-input"
     />
     <span class="count-badge">{{ filtered.length }} dose(s)</span>
   </div>
 
-  <!-- Table -->
   <div *ngIf="filtered.length === 0" class="empty-state">No doses logged yet.</div>
 
-  <table *ngIf="filtered.length > 0" class="history-table">
-    <thead>
-      <tr>
-        <th>Date &amp; Time</th>
-        <th>Medication</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let dose of filtered"
-        [ngClass]="{ 'highlight-row': dose.id === mostRecentId }"
-      >
-        <td>{{ dose.dateTaken | date:'medium' }}</td>
-        <td>{{ dose.medicationName }}</td>
-        <td>{{ dose.notes || '—' }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="filtered.length > 0" class="table-wrap">
+    <m-table [data]="tableRows"></m-table>
+  </div>
+
+  <div class="legend">Latest logged dose is marked in the table dataset.</div>
 </div>
