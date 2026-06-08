@@ -1,35 +1,36 @@
 <div class="page-header">
   <h2>📋 Intake History</h2>
-  <input type="text" [(ngModel)]="searchTerm" placeholder="Search by medication name…" class="search-input" />
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Search by medication name…"
+    class="search-input"
+  />
 </div>
 
-<!-- 7-Day Chart -->
+<!-- 7-Day chart using M-Framework m-timeserieschart -->
 <div class="chart-box">
-  <canvasjs-chart [options]="chartOptions" [styles]="{height:'260px', width:'100%'}"></canvasjs-chart>
+  <m-timeserieschart
+    [data]="chartData"
+    label="Doses per Day"
+    color="#7c8fff"
+    [min]="0"
+    unit="Doses">
+  </m-timeserieschart>
 </div>
 
-<!-- History Table -->
-<p *ngIf="filtered.length === 0" class="empty-msg">No doses logged yet.</p>
+<p *ngIf="tableRows.length === 0" class="empty-msg">No doses logged yet.</p>
 
-<div class="table-wrap" *ngIf="filtered.length > 0">
-  <table class="hist-table">
-    <thead>
-      <tr>
-        <th>Medication</th>
-        <th>Date &amp; Time</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let dose of filtered"
-          [class.highlight]="dose.id === latestId">
-        <td class="med-cell">
-          <img *ngIf="thumbFor(dose)" [src]="thumbFor(dose)" alt="" class="thumb" />
-          <span>{{ dose.medicationName }}</span>
-        </td>
-        <td class="date-cell">{{ dose.dateTaken | date:'medium' }}</td>
-        <td class="notes-cell">{{ dose.notes || '—' }}</td>
-      </tr>
-    </tbody>
-  </table>
+<!-- History table using M-Framework m-table with filter -->
+<div class="table-wrap" *ngIf="tableRows.length > 0">
+  <m-table
+    [data]="tableRows"
+    [filterTerm]="searchTerm"
+    [columnsToBeDisplayed]="tableColumns"
+    [tableHeaders]="tableHeaders">
+  </m-table>
+</div>
+
+<div class="legend" *ngIf="tableRows.length > 0">
+  <span class="legend-dot"></span> Most recently logged dose
 </div>

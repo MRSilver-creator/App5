@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
 import { DoseLog, Medication } from '../../models/medication.model';
-import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { MTableComponent } from '../../m-framework/components/m-table/m-table.component';
+import { MTimeseriesChartComponent } from '../../m-framework/components/m-timeserieschart/m-timeserieschart.component';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, FormsModule, CanvasJSAngularChartsModule],
+  imports: [CommonModule, FormsModule, MTableComponent, MTimeseriesChartComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css',
 })
@@ -17,7 +18,17 @@ export class HistoryComponent implements OnInit, OnDestroy {
   doses: DoseLog[]          = [];
   medications: Medication[] = [];
   searchTerm = '';
-  chartOptions: any = {};
+
+  // Flattened rows fed into <m-table>
+  tableRows: any[] = [];
+  tableColumns = ['dateTaken', 'medicationName', 'notes'];
+  tableHeaders = ['Date & Time Taken', 'Medication', 'Notes'];
+
+  // Data fed into <m-timeserieschart>
+  chartData: { date: string; value: number }[] = [];
+
+  // ID of the most recently logged dose (for highlight)
+  latestId: string | undefined;
 
   private subs: Subscription[] = [];
 
@@ -29,73 +40,39 @@ export class HistoryComponent implements OnInit, OnDestroy {
         this.doses = [...d].sort(
           (a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime()
         );
-        this.buildChart();
+        this.latestId = this.doses[0]?.id;
+        this.buildTableRows();
+        this.buildChartData();
       }),
-      this.firebase.getMedications().subscribe(m => this.medications = m)
+      this.firebase.getMedications().subscribe(m => {
+        this.medications = m;
+        this.buildTableRows();
+      })
     );
   }
 
-  get latestId(): string | undefined {
-    return this.doses[0]?.id;
+  private buildTableRows() {
+    this.tableRows = this.doses.map(dose => ({
+      id:             dose.id,
+      dateTaken:      new Date(dose.dateTaken).toLocaleString(),
+      medicationName: dose.medicationName,
+      notes:          dose.notes || '—',
+      _isLatest:      dose.id === this.latestId,
+    }));
   }
 
-  get filtered(): DoseLog[] {
-    const q = this.searchTerm.toLowerCase();
-    if (!q) return this.doses;
-    return this.doses.filter(d => d.medicationName.toLowerCase().includes(q));
-  }
-
-  thumbFor(dose: DoseLog): string {
-    const med = this.medications.find(m => m.id === dose.medicationId);
-    return med ? `data:${med.imageMimeType};base64,${med.imageBase64}` : '';
-  }
-
-  buildChart() {
+  private buildChartData() {
     const today = new Date();
-    const days: { label: string; date: string }[] = [];
+    const result: { date: string; value: number }[] = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
-      days.push({
-        label: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
-        date:  d.toISOString().slice(0, 10),
-      });
+      const dateStr = d.toISOString().slice(0, 10);
+      const label   = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const count   = this.doses.filter(dose => dose.dateTaken.slice(0, 10) === dateStr).length;
+      result.push({ date: label, value: count });
     }
-
-    const dataPoints = days.map(day => ({
-      label: day.label,
-      y: this.doses.filter(d => d.dateTaken.slice(0, 10) === day.date).length,
-    }));
-
-    this.chartOptions = {
-      animationEnabled: true,
-      backgroundColor:  '#0f1117',
-      title: {
-        text: '7-Day Medication Intake',
-        fontColor: '#e8eaf0',
-        fontFamily: 'Segoe UI, sans-serif',
-        fontSize: 16,
-      },
-      axisX: {
-        labelFontColor: '#8890a8',
-        lineColor: '#2a2d3a',
-        tickColor: '#2a2d3a',
-      },
-      axisY: {
-        title: 'Doses',
-        titleFontColor: '#636880',
-        labelFontColor: '#8890a8',
-        gridColor: '#1e2238',
-        lineColor: '#2a2d3a',
-        minimum: 0,
-        interval: 1,
-      },
-      data: [{
-        type: 'column',
-        color: '#7c8fff',
-        dataPoints,
-      }],
-    };
+    this.chartData = result;
   }
 
   ngOnDestroy() { this.subs.forEach(s => s.unsubscribe()); }
