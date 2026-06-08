@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { FirebaseService } from '../../services/firebase.service';
 import { DoseLog } from '../../models/medication.model';
 
@@ -10,17 +11,17 @@ interface ChartDataPoint { label: string; y: number; }
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CanvasJSAngularChartsModule],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css',
 })
 export class HistoryComponent implements OnInit, OnDestroy {
-  doses         : DoseLog[] = [];
-  searchQuery    = '';
-  private subs  : Subscription[] = [];
+  doses        : DoseLog[] = [];
+  searchQuery   = '';
+  chartOptions : any = null;
+  private subs : Subscription[] = [];
 
-  // Chart
-  chartOptions  : any = null;
+  constructor(private firebase: FirebaseService) {}
 
   ngOnInit() {
     this.subs.push(
@@ -32,8 +33,6 @@ export class HistoryComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-  constructor(private firebase: FirebaseService) {}
 
   get mostRecentId(): string | undefined {
     return this.doses[0]?.id;
@@ -51,11 +50,9 @@ export class HistoryComponent implements OnInit, OnDestroy {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(today.getDate() - i);
-      const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const label   = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const dateStr = d.toISOString().slice(0, 10);
-      const count = this.doses.filter(dose =>
-        dose.dateTaken.startsWith(dateStr)
-      ).length;
+      const count   = this.doses.filter(dose => dose.dateTaken.startsWith(dateStr)).length;
       days.push({ label, y: count });
     }
 
@@ -64,11 +61,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
       title: { text: '7-Day Medication Intake', fontFamily: 'inherit', fontColor: '#2c3e50' },
       axisX: { title: 'Date', titleFontColor: '#555', labelFontColor: '#555' },
       axisY: { title: 'Doses', minimum: 0, interval: 1, titleFontColor: '#555', labelFontColor: '#555' },
-      data: [{
-        type: 'column',
-        color: '#3498db',
-        dataPoints: days
-      }]
+      data: [{ type: 'column', color: '#3498db', dataPoints: days }]
     };
   }
 

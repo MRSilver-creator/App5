@@ -1,2 +1,2 @@
-// CanvasJS chart import shim – referenced in history.component.ts if needed
+// placeholder – unused, safe to ignore
 export {};
