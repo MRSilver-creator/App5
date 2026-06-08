@@ -100,7 +100,6 @@ export class IdentifyComponent implements OnDestroy {
       }
       this.analysisResult = result;
     } catch (err: any) {
-      // Show the real error message from the service
       this.errorMsg = err?.message ?? 'Gemini analysis failed. Check your API key or try again.';
     } finally {
       this.analyzing = false;
@@ -109,7 +108,8 @@ export class IdentifyComponent implements OnDestroy {
 
   async saveToLibrary() {
     if (!this.analysisResult || !this.capturedImage) return;
-    this.saving = true;
+    this.saving   = true;
+    this.errorMsg = null;
     try {
       await this.firebase.saveMedication({
         nickname:      this.nickname.trim() || undefined,
@@ -120,8 +120,12 @@ export class IdentifyComponent implements OnDestroy {
       });
       this.saveSuccess = true;
       setTimeout(() => this.router.navigate(['/library']), 1400);
-    } catch {
-      this.errorMsg = 'Failed to save. Check your Firebase config.';
+    } catch (err: any) {
+      // Show real Firebase error (e.g. permission denied, missing databaseURL)
+      console.error('Save to library failed:', err);
+      this.errorMsg = `Failed to save: ${
+        err?.message ?? 'Check your Firebase config (databaseURL, rules)'
+      }`;
     } finally {
       this.saving = false;
     }

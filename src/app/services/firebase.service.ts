@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 import {
-  getDatabase, ref, push, set, onValue, off
+  getDatabase, ref, push, set, onValue, off, Database
 } from 'firebase/database';
+import { getApp } from 'firebase/app';
 import { Observable } from 'rxjs';
 import { Medication, DoseLog } from '../models/medication.model';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseService {
-  private db = getDatabase();
+
+  // Lazy getter — only calls getDatabase() after initializeApp() has run
+  private get db(): Database {
+    return getDatabase(getApp());
+  }
 
   // ── Medications ────────────────────────────────────────────────
   saveMedication(med: Omit<Medication, 'id'>): Promise<string> {
     const listRef = ref(this.db, 'medications');
     const newRef  = push(listRef);
-    return set(newRef, med).then(() => newRef.key!);
+    return set(newRef, med)
+      .then(() => newRef.key!)
+      .catch(err => {
+        console.error('Firebase saveMedication error:', err);
+        throw err;
+      });
   }
 
   getMedications(): Observable<Medication[]> {
@@ -27,7 +37,10 @@ export class FirebaseService {
           }));
           observer.next(list);
         },
-        err => observer.error(err)
+        err => {
+          console.error('Firebase getMedications error:', err);
+          observer.error(err);
+        }
       );
       return () => off(r);
     });
@@ -37,7 +50,12 @@ export class FirebaseService {
   saveDose(dose: Omit<DoseLog, 'id'>): Promise<string> {
     const listRef = ref(this.db, 'doses');
     const newRef  = push(listRef);
-    return set(newRef, dose).then(() => newRef.key!);
+    return set(newRef, dose)
+      .then(() => newRef.key!)
+      .catch(err => {
+        console.error('Firebase saveDose error:', err);
+        throw err;
+      });
   }
 
   getDoses(): Observable<DoseLog[]> {
@@ -51,7 +69,10 @@ export class FirebaseService {
           }));
           observer.next(list);
         },
-        err => observer.error(err)
+        err => {
+          console.error('Firebase getDoses error:', err);
+          observer.error(err);
+        }
       );
       return () => off(r);
     });
