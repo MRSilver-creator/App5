@@ -13,11 +13,16 @@ export class FirebaseService {
     return getDatabase(getApp());
   }
 
+  /** Remove keys with undefined values — Firebase rejects them */
+  private clean<T extends object>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj)) as T;
+  }
+
   // ── Medications ────────────────────────────────────────────────
   saveMedication(med: Omit<Medication, 'id'>): Promise<string> {
     const listRef = ref(this.db, 'medications');
     const newRef  = push(listRef);
-    return set(newRef, med)
+    return set(newRef, this.clean(med))
       .then(() => newRef.key!)
       .catch(err => { console.error('Firebase saveMedication error:', err); throw err; });
   }
@@ -48,7 +53,7 @@ export class FirebaseService {
   saveDose(dose: Omit<DoseLog, 'id'>): Promise<string> {
     const listRef = ref(this.db, 'doses');
     const newRef  = push(listRef);
-    return set(newRef, dose)
+    return set(newRef, this.clean(dose))
       .then(() => newRef.key!)
       .catch(err => { console.error('Firebase saveDose error:', err); throw err; });
   }
