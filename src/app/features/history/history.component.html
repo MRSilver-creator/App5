@@ -19,18 +19,42 @@
   </m-timeserieschart>
 </div>
 
-<p *ngIf="tableRows.length === 0" class="empty-msg">No doses logged yet.</p>
+<p *ngIf="filtered.length === 0" class="empty-msg">No doses logged yet.</p>
 
-<!-- History table using M-Framework m-table with filter -->
-<div class="table-wrap" *ngIf="tableRows.length > 0">
-  <m-table
-    [data]="tableRows"
-    [filterTerm]="searchTerm"
-    [columnsToBeDisplayed]="tableColumns"
-    [tableHeaders]="tableHeaders">
-  </m-table>
+<!-- Custom table — required because m-table can only render plain text,
+     but the assignment requires a medication thumbnail in every row -->
+<div class="table-wrap" *ngIf="filtered.length > 0">
+  <table class="hist-table">
+    <thead>
+      <tr>
+        <th>Medication</th>
+        <th>Date &amp; Time Taken</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let dose of filtered"
+        [class.highlight]="dose.id === latestId">
+
+        <!-- Medication name WITH thumbnail (assignment requirement) -->
+        <td class="med-cell">
+          <img
+            *ngIf="thumbFor(dose)"
+            [src]="thumbFor(dose)"
+            alt="medication thumbnail"
+            class="thumb"
+          />
+          <span>{{ dose.medicationName }}</span>
+        </td>
+
+        <td class="date-cell">{{ dose.dateTaken | date:'medium' }}</td>
+        <td class="notes-cell">{{ dose.notes || '—' }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<div class="legend" *ngIf="tableRows.length > 0">
+<div class="legend" *ngIf="filtered.length > 0">
   <span class="legend-dot"></span> Most recently logged dose
 </div>

@@ -7,15 +7,12 @@ h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; color: #e8eaf0;
 .or { color: #636880; font-size: 0.85rem; }
 .mt { margin-top: 0.8rem; }
 .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.6rem 1.3rem; border-radius: 7px; border: none; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.btn-primary   { background: #7c8fff; color: #0f1117; }
-.btn-primary:hover { background: #9aaaff; }
-.btn-secondary { background: #1e2238; color: #8890a8; border: 1px solid #2e3358; cursor: pointer; }
-.btn-secondary:hover { border-color: #7c8fff; color: #e8eaf0; }
-.btn-success   { background: #28a745; color: #fff; }
-.btn-success:hover { background: #34c758; }
-.btn-danger    { background: #dc3545; color: #fff; }
-.btn-danger:hover  { background: #e5505f; }
-.btn-large     { width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; }
+.btn-primary   { background: #7c8fff; color: #0f1117; } .btn-primary:hover { background: #9aaaff; }
+.btn-secondary { background: #1e2238; color: #8890a8; border: 1px solid #2e3358; cursor: pointer; } .btn-secondary:hover { border-color: #7c8fff; color: #e8eaf0; }
+.btn-success   { background: #28a745; color: #fff; } .btn-success:hover { background: #34c758; }
+.btn-danger    { background: #dc3545; color: #fff; } .btn-danger:hover  { background: #e5505f; }
+.btn-warning   { background: #ff8c00; color: #0f1117; font-weight: 700; } .btn-warning:hover { background: #ffa733; }
+.btn-large     { width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; margin-top: 1rem; }
 .btn:disabled  { opacity: 0.5; cursor: not-allowed; }
 .camera-box    { margin-top: 1rem; }
 .video-preview { width: 100%; max-height: 320px; border-radius: 8px; border: 1px solid #2a2d3a; background: #000; }
@@ -37,3 +34,5 @@ h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; color: #e8eaf0;
 .badge.medium { background: #2d2200; color: #ffd680; border: 1px solid #ff8c00; }
 .badge.low    { background: #2d0a0a; color: #ff6b6b; border: 1px solid #dc3545; }
 ul { margin: 0; padding-left: 1.2rem; color: #8890a8; font-size: 0.88rem; line-height: 1.7; }
+.low-conf-actions { border: 1px solid #ff8c00; background: #2d1a00; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+.low-conf-msg { color: #ffd680; font-size: 0.88rem; margin-bottom: 0.8rem; }

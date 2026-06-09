@@ -79,7 +79,24 @@
         <ul><li *ngFor="let w of analysisResult.warnings">{{ w }}</li></ul>
       </div>
     </div>
-    <button class="btn btn-success btn-large" (click)="saveToLibrary()" [disabled]="saving">
+
+    <!-- Low confidence: show Proceed Anyway before Save becomes available -->
+    <div *ngIf="isLowConfidence && !lowConfirmedByUser" class="low-conf-actions">
+      <p class="low-conf-msg">
+        ⚠️ Save is blocked due to low confidence. You can retake the photo, or proceed anyway at your own risk.
+      </p>
+      <div class="btn-row">
+        <button class="btn btn-secondary" (click)="reset()">🔄 Retake Photo</button>
+        <button class="btn btn-warning"   (click)="proceedWithLowConfidence()">Proceed Anyway</button>
+      </div>
+    </div>
+
+    <!-- Save button — only shown when canSave is true -->
+    <button
+      *ngIf="canSave && !saveSuccess"
+      class="btn btn-success btn-large"
+      (click)="saveToLibrary()"
+      [disabled]="saving">
       <span *ngIf="!saving">💾 Save to Library</span>
       <span *ngIf="saving">Saving…</span>
     </button>

@@ -29,6 +29,10 @@ export class IdentifyComponent implements OnDestroy {
   saving         = false;
   saveSuccess    = false;
 
+  // Low confidence state — blocks save until user explicitly confirms
+  isLowConfidence     = false;
+  lowConfirmedByUser  = false;
+
   private stream: MediaStream | null = null;
 
   constructor(
@@ -60,7 +64,9 @@ export class IdentifyComponent implements OnDestroy {
     this.capturedImage = dataUrl.split(',')[1];
     this.capturedMime  = 'image/jpeg';
     this.previewUrl    = dataUrl;
-    this.analysisResult = null;
+    this.analysisResult  = null;
+    this.isLowConfidence = false;
+    this.lowConfirmedByUser = false;
     this.stopCamera();
   }
 
@@ -76,11 +82,13 @@ export class IdentifyComponent implements OnDestroy {
     const reader = new FileReader();
     reader.onload = () => {
       const dataUrl = reader.result as string;
-      this.capturedMime  = file.type || 'image/jpeg';
-      this.capturedImage = dataUrl.split(',')[1];
-      this.previewUrl    = dataUrl;
-      this.analysisResult = null;
-      this.errorMsg = null;
+      this.capturedMime       = file.type || 'image/jpeg';
+      this.capturedImage      = dataUrl.split(',')[1];
+      this.previewUrl         = dataUrl;
+      this.analysisResult     = null;
+      this.errorMsg           = null;
+      this.isLowConfidence    = false;
+      this.lowConfirmedByUser = false;
     };
     reader.readAsDataURL(file);
   }
@@ -90,14 +98,21 @@ export class IdentifyComponent implements OnDestroy {
       this.errorMsg = 'Please capture or upload an image first.';
       return;
     }
-    this.analyzing      = true;
-    this.errorMsg       = null;
-    this.analysisResult = null;
+    this.analyzing          = true;
+    this.errorMsg           = null;
+    this.analysisResult     = null;
+    this.isLowConfidence    = false;
+    this.lowConfirmedByUser = false;
+
     try {
       const result = await this.gemini.analyzeMedication(this.capturedImage, this.capturedMime);
+
       if (result.confidenceLevel === 'low') {
-        this.errorMsg = 'Low confidence — please retake the photo with better lighting or proceed manually.';
+        // Mark low confidence — Save to Library is BLOCKED until user confirms
+        this.isLowConfidence = true;
+        this.errorMsg = '⚠️ Low confidence — Gemini is not sure about this medication. Retake the photo for better results, or tap “Proceed Anyway” to save with a low-confidence flag.';
       }
+
       this.analysisResult = result;
     } catch (err: any) {
       this.errorMsg = err?.message ?? 'Gemini analysis failed. Check your API key or try again.';
@@ -106,14 +121,25 @@ export class IdentifyComponent implements OnDestroy {
     }
   }
 
+  /** User explicitly chooses to proceed despite low confidence */
+  proceedWithLowConfidence() {
+    this.lowConfirmedByUser = true;
+    this.errorMsg = null;
+  }
+
+  /** Save is only allowed if confidence is NOT low, OR user has confirmed */
+  get canSave(): boolean {
+    return !!this.analysisResult && (!this.isLowConfidence || this.lowConfirmedByUser);
+  }
+
   async saveToLibrary() {
-    if (!this.analysisResult || !this.capturedImage) return;
+    if (!this.canSave || !this.capturedImage) return;
     this.saving   = true;
     this.errorMsg = null;
     try {
       await this.firebase.saveMedication({
         nickname:      this.nickname.trim() || undefined,
-        analysis:      this.analysisResult,
+        analysis:      this.analysisResult!,
         imageBase64:   this.capturedImage,
         imageMimeType: this.capturedMime,
         dateAdded:     new Date().toISOString(),
@@ -121,7 +147,6 @@ export class IdentifyComponent implements OnDestroy {
       this.saveSuccess = true;
       setTimeout(() => this.router.navigate(['/library']), 1400);
     } catch (err: any) {
-      // Show real Firebase error (e.g. permission denied, missing databaseURL)
       console.error('Save to library failed:', err);
       this.errorMsg = `Failed to save: ${
         err?.message ?? 'Check your Firebase config (databaseURL, rules)'
@@ -132,12 +157,14 @@ export class IdentifyComponent implements OnDestroy {
   }
 
   reset() {
-    this.capturedImage  = null;
-    this.previewUrl     = null;
-    this.analysisResult = null;
-    this.errorMsg       = null;
-    this.nickname       = '';
-    this.saveSuccess    = false;
+    this.capturedImage      = null;
+    this.previewUrl         = null;
+    this.analysisResult     = null;
+    this.errorMsg           = null;
+    this.nickname           = '';
+    this.saveSuccess        = false;
+    this.isLowConfidence    = false;
+    this.lowConfirmedByUser = false;
   }
 
   ngOnDestroy() { this.stopCamera(); }

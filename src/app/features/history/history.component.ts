@@ -4,13 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
 import { DoseLog, Medication } from '../../models/medication.model';
-import { MTableComponent } from '../../m-framework/components/m-table/m-table.component';
 import { MTimeseriesChartComponent } from '../../m-framework/components/m-timeserieschart/m-timeserieschart.component';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, FormsModule, MTableComponent, MTimeseriesChartComponent],
+  imports: [CommonModule, FormsModule, MTimeseriesChartComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css',
 })
@@ -18,17 +17,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   doses: DoseLog[]          = [];
   medications: Medication[] = [];
   searchTerm = '';
-
-  // Flattened rows fed into <m-table>
-  tableRows: any[] = [];
-  tableColumns = ['dateTaken', 'medicationName', 'notes'];
-  tableHeaders = ['Date & Time Taken', 'Medication', 'Notes'];
-
-  // Data fed into <m-timeserieschart>
   chartData: { date: string; value: number }[] = [];
-
-  // ID of the most recently logged dose (for highlight)
-  latestId: string | undefined;
 
   private subs: Subscription[] = [];
 
@@ -40,25 +29,25 @@ export class HistoryComponent implements OnInit, OnDestroy {
         this.doses = [...d].sort(
           (a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime()
         );
-        this.latestId = this.doses[0]?.id;
-        this.buildTableRows();
         this.buildChartData();
       }),
-      this.firebase.getMedications().subscribe(m => {
-        this.medications = m;
-        this.buildTableRows();
-      })
+      this.firebase.getMedications().subscribe(m => this.medications = m)
     );
   }
 
-  private buildTableRows() {
-    this.tableRows = this.doses.map(dose => ({
-      id:             dose.id,
-      dateTaken:      new Date(dose.dateTaken).toLocaleString(),
-      medicationName: dose.medicationName,
-      notes:          dose.notes || '—',
-      _isLatest:      dose.id === this.latestId,
-    }));
+  get latestId(): string | undefined {
+    return this.doses[0]?.id;
+  }
+
+  get filtered(): DoseLog[] {
+    const q = this.searchTerm.toLowerCase();
+    if (!q) return this.doses;
+    return this.doses.filter(d => d.medicationName.toLowerCase().includes(q));
+  }
+
+  thumbFor(dose: DoseLog): string {
+    const med = this.medications.find(m => m.id === dose.medicationId);
+    return med ? `data:${med.imageMimeType};base64,${med.imageBase64}` : '';
   }
 
   private buildChartData() {
