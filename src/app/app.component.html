@@ -4,31 +4,43 @@
   Always verify with a pharmacist or doctor.
 </div>
 
-<!-- Top navigation -->
-<nav class="top-nav">
-  <!-- University logo -->
-  <a class="nav-logo" routerLink="/">
-    <img
-      src="assets/university-logo.png"
-      alt="University Logo"
-      class="uni-logo"
-      onerror="this.style.display='none'"
-    />
-    <span class="logo-text">💊 PillSnap</span>
-  </a>
+<!-- m-framework header (visible on every page) -->
+<m-header
+  [title]="appTitle"
+  homename="Home"
+  [features]="navFeatures">
+</m-header>
 
-  <div class="nav-links">
-    <a routerLink="/"         routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
-    <a routerLink="/identify" routerLinkActive="active">Identify</a>
-    <a routerLink="/library"  routerLinkActive="active">Library</a>
-    <a routerLink="/log-dose" routerLinkActive="active">Log Dose</a>
-    <a routerLink="/history"  routerLinkActive="active">History</a>
+<!-- m-framework container wraps the whole page body -->
+<m-container>
+
+  <!-- Welcome alert (visible on every page) -->
+  <m-aha type="success" header="Welcome back!">
+    Use the menu below to navigate to any section of the app.
+  </m-aha>
+
+  <!-- Quick-stats row (visible on every page) -->
+  <div class="stats-row">
+    <m-result-box
+      *ngFor="let stat of stats"
+      [label]="stat.label"
+      [value]="stat.value"
+      class="normal">
+    </m-result-box>
   </div>
-</nav>
 
-<main class="main-content">
-  <router-outlet />
-</main>
+  <!-- m-framework side menu (visible on every page) -->
+  <m-main-menu
+    [menuitems]="navFeatures"
+    (menuclick)="onMenuClick($event)">
+  </m-main-menu>
+
+  <!-- Routed page content goes here -->
+  <main class="main-content">
+    <router-outlet />
+  </main>
+
+</m-container>
 
 <!-- Footer -->
 <footer class="footer">
