@@ -1,17 +1,241 @@
-/* Global reset & base */
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #f4f6f8;
-  color: #333;
+:root {
+    --bg-primary: #12121a;
+    --bg-surface: #1c1c2e;
+    --bg-elevated: #262640;
+    --bg-hover: #303050;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    --text-primary: #e0e0ec;
+    --text-secondary: #a0a0b8;
+    --text-muted: #6c6c8a;
+    --border: #2e2e45;
+    --border-light: #3a3a55;
+    --accent-primary: #7c6ff7;
+    --accent-secondary: #4fc3f7;
+    --accent-success: #66bb6a;
+    --accent-warning: #ffa726;
+    --accent-danger: #ef5350;
+    --accent-info: #42a5f5;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
 }
 
-a { color: inherit; }
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
-h1, h2, h3, h4 { margin: 0; }
+body {
+    line-height: 1.7em;
+    font-size: 13px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-input, select, textarea, button {
-  font-family: inherit;
+p {
+    margin: 10px;
+    font-size: 20px;
+}
+
+.pure-menu {
+    background-color: var(--bg-surface);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label {
+    color: var(--text-primary);
+}
+
+.pure-img-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+.l-box {
+    padding: 1em;
+}
+
+.l-box-lrg {
+    padding: 2em;
+    border-bottom: 1px solid var(--border);
+}
+
+.is-center {
+    text-align: center;
+}
+
+.pure-form label {
+    margin: 1em 0 0;
+    font-weight: bold;
+    font-size: 100%;
+}
+
+.pure-form input[type] {
+    border: 2px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    box-shadow: none;
+    font-size: 100%;
+    width: 100%;
+    margin-bottom: 1em;
+    border-radius: var(--radius-sm);
+    padding: 0.5em;
+}
+
+.pure-form input[type]:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(124, 111, 247, 0.2);
+}
+
+.pure-button {
+    background-color: var(--bg-elevated);
+    color: var(--text-primary);
+    font-weight: bolder;
+    margin: 10px;
+    width: 100%;
+    font-size: 20px;
+    padding: 0.5em 2em;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+}
+
+.pure-button:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--accent-primary);
+}
+
+a.pure-button-primary {
+    background: var(--accent-primary);
+    color: #fff;
+    border-radius: var(--radius-md);
+    font-size: 120%;
+    border: none;
+}
+
+a.pure-button-primary:hover {
+    background: #6a5ee0;
+}
+
+.home-menu {
+    text-align: center;
+    background: var(--accent-primary);
+}
+
+.pure-menu-link {
+    font-size: 120%;
+}
+
+.home-menu .pure-menu-heading {
+    color: #fff;
+    font-size: 220%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.home-menu .pure-menu-selected a {
+    color: #fff;
+}
+
+.home-menu a {
+    color: #fff;
+}
+
+.home-menu li a:hover,
+.home-menu li a:focus {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.content-wrapper {
+    position: absolute;
+    top: 87%;
+    width: 100%;
+    min-height: 12%;
+    z-index: 2;
+    background-color: var(--bg-primary);
+}
+
+.content {
+    padding: 1em 1em 3em;
+    background-color: var(--bg-primary);
+}
+
+.content-head {
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 2em 0 1em;
+}
+
+.content-head-ribbon {
+    color: #fff;
+}
+
+.content-subhead {
+    color: var(--accent-secondary);
+}
+
+.content-subhead i {
+    margin-right: 7px;
+}
+
+.ribbon {
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+}
+
+.footer {
+    background: var(--bg-surface);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: var(--text-secondary);
+    padding: 5px;
+    border-top: 1px solid var(--border);
+}
+
+@media (min-width: 48em) {
+    body {
+        font-size: 16px;
+    }
+
+    .home-menu {
+        text-align: left;
+    }
+
+    .home-menu ul {
+        float: right;
+    }
+
+    .splash {
+        width: 50%;
+        height: 50%;
+    }
+
+    .splash-head {
+        font-size: 250%;
+    }
+
+    .l-box-lrg {
+        border: none;
+    }
+}
+
+@media (min-width: 78em) {
+    .splash-head {
+        font-size: 300%;
+    }
 }

@@ -80,3 +80,20 @@
 .feat-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
 .feat-title { font-weight: 700; font-size: 0.95rem; color: #e8eaf0; margin-bottom: 0.4rem; }
 .feat-desc  { font-size: 0.83rem; color: #636880; line-height: 1.6; }
+
+input[type="range"] {
+    width: 100%;
+    background: var(--bg-elevated, #262640);
+    border-radius: 4px;
+    accent-color: var(--accent-primary, #7c6ff7);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: var(--bg-elevated, #262640);
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background: var(--accent-primary, #7c6ff7);
+}
+

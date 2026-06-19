@@ -6,68 +6,66 @@
   gap: 1rem;
   margin-bottom: 1.8rem;
 }
-h2 { font-size: 1.5rem; font-weight: 700; color: #e8eaf0; margin: 0; }
+h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-primary, #e0e0ec); margin: 0; }
 
 .search-input {
-  background: #161820;
-  border: 1px solid #2a2d3a;
-  color: #e8eaf0;
+  background: var(--bg-elevated, #262640);
+  border: 1px solid var(--border, #2e2e45);
+  color: var(--text-primary, #e0e0ec);
   border-radius: 7px;
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
   min-width: 240px;
 }
-.search-input:focus { outline: none; border-color: #7c8fff; }
+.search-input:focus { outline: none; border-color: var(--accent-primary, #7c6ff7); }
 
 .chart-box {
-  background: #fff;
-  border: 1px solid #2a2d3a;
-  border-radius: 10px;
+  background: var(--bg-surface, #1c1c2e);
+  border: 1px solid var(--border, #2e2e45);
+  border-radius: var(--radius-lg, 12px);
   padding: 1rem;
   margin-bottom: 2rem;
   overflow: hidden;
 }
 
-.empty-msg { color: #636880; text-align: center; margin-top: 2rem; }
+.empty-msg { color: var(--text-secondary, #a0a0b8); text-align: center; margin-top: 2rem; }
 
-.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #2a2d3a; }
+.table-wrap { overflow-x: auto; border-radius: var(--radius-lg, 12px); border: 1px solid var(--border, #2e2e45); }
 
 .hist-table { width: 100%; border-collapse: collapse; }
 .hist-table thead th {
-  background: #1a1d28;
-  color: #636880;
+  background: var(--bg-elevated, #262640);
+  color: var(--text-secondary, #a0a0b8);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 0.9rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #2a2d3a;
+  border-bottom: 1px solid var(--border, #2e2e45);
 }
 .hist-table tbody tr {
-  border-bottom: 1px solid #1e2238;
+  border-bottom: 1px solid var(--border, #2e2e45);
   transition: background 0.15s;
 }
-.hist-table tbody tr:hover { background: #1a1d28; }
+.hist-table tbody tr:hover { background: var(--bg-elevated, #262640); }
 
-/* Most recently logged dose — highlighted row */
 .hist-table tbody tr.highlight {
-  background: #1c2240;
-  border-left: 3px solid #7c8fff;
+  background: var(--bg-elevated, #262640);
+  border-left: 3px solid var(--accent-primary, #7c6ff7);
 }
 
 .hist-table td {
   padding: 0.85rem 1rem;
   font-size: 0.88rem;
-  color: #8890a8;
+  color: var(--text-secondary, #a0a0b8);
   vertical-align: middle;
 }
 
-/* Medication cell: thumbnail + name side by side */
 .med-cell {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  color: #e8eaf0;
+  color: var(--text-primary, #e0e0ec);
   font-weight: 600;
 }
 .thumb {
@@ -76,10 +74,10 @@ h2 { font-size: 1.5rem; font-weight: 700; color: #e8eaf0; margin: 0; }
   border-radius: 5px;
   object-fit: cover;
   flex-shrink: 0;
-  border: 1px solid #2a2d3a;
+  border: 1px solid var(--border, #2e2e45);
 }
 
-.date-cell { white-space: nowrap; color: #636880; }
+.date-cell { white-space: nowrap; color: var(--text-secondary, #a0a0b8); }
 .notes-cell { max-width: 280px; }
 
 .legend {
@@ -88,13 +86,13 @@ h2 { font-size: 1.5rem; font-weight: 700; color: #e8eaf0; margin: 0; }
   gap: 0.5rem;
   margin-top: 0.8rem;
   font-size: 0.78rem;
-  color: #636880;
+  color: var(--text-secondary, #a0a0b8);
 }
 .legend-dot {
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  background: #1c2240;
-  border: 2px solid #7c8fff;
+  background: var(--bg-elevated, #262640);
+  border: 2px solid var(--accent-primary, #7c6ff7);
   display: inline-block;
 }

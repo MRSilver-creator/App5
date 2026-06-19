@@ -1,10 +1,10 @@
 .chart-wrapper {
-    background: #ffffff;
-    border-radius: 12px;
+    background: var(--bg-surface, #1c1c2e);
+    border-radius: var(--radius-lg, 12px);
     padding: 1.5rem;
     margin: 1rem 0;
-    box-shadow: 0 2px 12px rgba(26, 43, 74, 0.08);
-    border: 1px solid #E2E8F0;
+    box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.4));
+    border: 1px solid var(--border, #2e2e45);
 }
 
 .chart-wrapper canvas {

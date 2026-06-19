@@ -1,35 +1,51 @@
 .pure-table-head {
-    background: rgb(12,35,64);
-    color: white;
+    background: var(--bg-elevated, #262640);
+    color: var(--text-primary, #e0e0ec);
 }
-.pure-table{
+
+.pure-table {
     width: 100%;
+    background: var(--bg-surface, #1c1c2e);
+    color: var(--text-primary, #e0e0ec);
+    border: 1px solid var(--border, #2e2e45);
 }
+
+.pure-table td,
+.pure-table th {
+    border-color: var(--border, #2e2e45);
+}
+
+.pure-table-striped tr:nth-child(2n-1) td {
+    background: var(--bg-elevated, #262640);
+}
+
 .action-button-col {
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
+
 .pure-table th:last-child,
 .pure-table td:last-child {
-    width: 150px; 
+    width: 150px;
 }
-caption{
-    color:rgb(12,35,64);
-    font-size: 1em; 
+
+caption {
+    color: var(--text-secondary, #a0a0b8);
+    font-size: 1em;
 }
+
 .button {
-    --background: rgb(12,35,64);
-    --background-hover: rgb(238,39,55);
+    --background: var(--accent-primary, #7c6ff7);
+    --background-hover: var(--accent-danger, #ef5350);
     --text: #fff;
-    --shadow: rgba(0, 9, 61, .2);
-    --paper: rgb(12,35,64);
+    --shadow: rgba(0, 0, 0, 0.3);
+    --paper: var(--accent-primary, #7c6ff7);
     --paper-lines: #fff;
     --trash: #e1e6f9;
     --trash-lines: #bbc1e1;
     --check: #fff;
-    --check-background: rgb(238,39,55);
+    --check-background: var(--accent-danger, #ef5350);
     position: relative;
     border: none;
     outline: none;
@@ -47,21 +63,22 @@ caption{
     box-shadow: 0 var(--shadow-y, 4px) var(--shadow-blur, 8px) var(--shadow);
     transform: scale(var(--scale, 1));
     transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-    margin-left: 10px; 
+    margin-left: 10px;
 }
+
 .arrow {
-  margin-left: 5px;
-  display: inline-block;
+    margin-left: 5px;
+    display: inline-block;
 }
 
 .arrow-default:before {
-  content: "\25B2"; /* Up arrow */
+    content: "\25B2";
 }
 
 .arrow-up:before {
-  content: "\25B2"; /* Up arrow */
+    content: "\25B2";
 }
 
 .arrow-down:before {
-  content: "\25BC"; /* Down arrow */
+    content: "\25BC";
 }
